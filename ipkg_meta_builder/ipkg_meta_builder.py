@@ -30,8 +30,9 @@ def writeControl(workdir, control_dict):
         f.write('Description: ' + control_dict['Description'] + '\n')
 
 def writeConffiles(workdir, confdir, conffiles_list):
-    if confdir[len(confdir) - 1] == '/':
-        confdir = confdir[:-1]
+    if confdir:
+        if confdir[len(confdir) - 1] == '/':
+            confdir = confdir[:-1]
 
     with open(workdir + '/conffiles', 'w') as f:
         for l in conffiles_list:
@@ -68,7 +69,7 @@ if __name__ == "__main__":
 
                 if not line:
                     continue
-
+                    
                 value = getValue(line, 'PKG_NAME')
                 if value:
                     control['Package'] = value
