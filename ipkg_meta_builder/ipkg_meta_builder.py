@@ -76,7 +76,12 @@ if __name__ == "__main__":
 
                 value = getValue(line, 'PKG_VERSION')
                 if value:
-                    result = re.findall(r'\S*\.V(\d+)\.S(\d+)', value)[0]
+                    result = None
+                    try:
+                        result = re.findall(r'\S*\.V(\d+)\.S(\d+)', value)[0]
+                    except:
+                        result=re.findall(r'(\d+)\.(\d+)', value)[0]
+                        
                     control['Version'] = result[0] + '.' + result[1] + control['Version']
                     continue
 
@@ -100,9 +105,16 @@ if __name__ == "__main__":
                     control['Description'] = value
                     continue
 
+                value = getValue(line, 'CONF_FILE')
+                if value:
+                    for e in value.split(' '):
+                        conffiles.append(e)
+                    continue
+
                 value = getValue(line, 'CONF_FILES')
                 if value:
-                    conffiles = value.split(' ')
+                    for e in value.split(' '):
+                        conffiles.append(e)
                     continue
 
                 value = getValue(line, 'CONF_DIR')
