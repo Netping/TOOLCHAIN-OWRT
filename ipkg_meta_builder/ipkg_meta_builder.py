@@ -20,6 +20,9 @@ def getValue(line, value):
     return ''
 
 def writeControl(workdir, control_dict):
+    if not control_dict['Depends']:
+        control_dict['Depends'] = ' '
+
     with open(workdir + '/control', 'w') as f:
         f.write('Package: ' + control_dict['Package'] + '\n')
         f.write('Version: ' + control_dict['Version'] + '\n')
@@ -39,14 +42,19 @@ def writeConffiles(workdir, confdir, conffiles_list):
             f.write(confdir + '/' + l  + '\n')
 
 def printHelp(program):
-    print('Usage: python3 ' + program + ' <arch> <path_to_dir>')
+    print('Usage: python3 ' + program + ' <arch> <path_to_dir> [output_path]')
     print('       Documantation: https://netping.atlassian.net/wiki/spaces/NW/pages/3605266478/DOC2.TOOLCHAIN-OWRT.pkg+meta+builder')
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    output_path = ''
+
+    if len(sys.argv) < 3 or len(sys.argv) > 4:
         print('Error: wrong arguments!')
         printHelp(sys.argv[0])
         sys.exit(-1)
+
+    if len(sys.argv) == 4:
+        output_path = sys.argv[3]
 
     try:
         conffiles = []
@@ -123,8 +131,12 @@ if __name__ == "__main__":
                     confdir = value
                     continue
 
-        writeConffiles(sys.argv[2], confdir, conffiles)
-        writeControl(sys.argv[2], control)
+        if not output_path:
+            writeConffiles(sys.argv[2], confdir, conffiles)
+            writeControl(sys.argv[2], control)
+        else:
+            writeConffiles(output_path, confdir, conffiles)
+            writeControl(output_path, control)
 
     except Exception as ex:
         print('Error: exception ' + str(ex))
