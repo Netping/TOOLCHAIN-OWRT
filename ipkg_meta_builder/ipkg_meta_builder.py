@@ -119,6 +119,11 @@ if __name__ == "__main__":
                     control['Version'] = control['Version'] + '-' + value
                     continue
 
+                value = getValue(line, 'PKG_DEPENDS')
+                if value:
+                    control['Depends'] = value
+                    continue
+
                 value = getValue(line, 'SECTION')
                 if value:
                     control['Section'] = value
