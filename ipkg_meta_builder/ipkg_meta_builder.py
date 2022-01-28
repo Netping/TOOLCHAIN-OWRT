@@ -20,26 +20,36 @@ def getValue(line, value):
     return ''
 
 def writeControl(workdir, control_dict):
-    if not control_dict['Depends']:
-        control_dict['Depends'] = ' '
+    try:
+        if not control_dict['Depends']:
+            control_dict['Depends'] = ' '
 
-    with open(workdir + '/control', 'w') as f:
-        f.write('Package: ' + control_dict['Package'] + '\n')
-        f.write('Version: ' + control_dict['Version'] + '\n')
-        f.write('Depends: ' + control_dict['Depends'] + '\n')
-        f.write('License: ' + control_dict['License'] + '\n')
-        f.write('Section: ' + control_dict['Section'] + '\n')
-        f.write('Architecture: ' + control_dict['Architecture'] + '\n')
-        f.write('Description: ' + control_dict['Description'] + '\n')
+        with open(workdir + '/control', 'w') as f:
+            f.write('Package: ' + control_dict['Package'] + '\n')
+            f.write('Version: ' + control_dict['Version'] + '\n')
+            f.write('Depends: ' + control_dict['Depends'] + '\n')
+            f.write('License: ' + control_dict['License'] + '\n')
+            f.write('Section: ' + control_dict['Section'] + '\n')
+            f.write('Architecture: ' + control_dict['Architecture'] + '\n')
+            f.write('Description: ' + control_dict['Description'] + '\n')
+
+        print('File control created successfully!')
+    except Exception as ex:
+        print('File control creating failed! Reason: ' + str(ex))
 
 def writeConffiles(workdir, confdir, conffiles_list):
-    if confdir:
-        if confdir[len(confdir) - 1] == '/':
-            confdir = confdir[:-1]
+    try:
+        if confdir:
+            if confdir[len(confdir) - 1] == '/':
+                confdir = confdir[:-1]
 
-    with open(workdir + '/conffiles', 'w') as f:
-        for l in conffiles_list:
-            f.write(confdir + '/' + l  + '\n')
+        with open(workdir + '/conffiles', 'w') as f:
+            for l in conffiles_list:
+                f.write(confdir + '/' + l  + '\n')
+
+        print('File conffiles created successfully!')
+    except Exception as ex:
+        print('File conffiles creating failed! Reason: ' + str(ex))
 
 def printHelp(program):
     print('Usage: python3 ' + program + ' <arch> <path_to_dir> [output_path]')
