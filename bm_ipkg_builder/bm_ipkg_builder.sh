@@ -1,9 +1,8 @@
 #!/bin/sh
 
 usage() {
-    echo "Usage: $0 -d package_dir"
-    echo "  -d package_dir - specify package directory"
-    echo "  -h this help"
+    echo "Usage: $0 <build_dir>"
+    echo -e "\n<build_dir> - specify package directory\n"
     exit 1
 }
 
