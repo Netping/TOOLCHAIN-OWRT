@@ -32,8 +32,8 @@ if [ ! -d "$datadir" ] || [ ! -f "$controlfile" ]; then
     error "Invalid directory structure"
 fi
 
-required_fields='Package Version Depends License Section Architecture Description'
-optional_fields='Alternatives Source SourceName LicenseFiles Maintainer Essential'
+required_fields='Package Version License Section Architecture Description'
+optional_fields='Alternatives Source SourceName Depends LicenseFiles Maintainer Essential'
 
 # Check required fields
 for field in ${required_fields}; do
@@ -110,7 +110,9 @@ rm -fr ${tmpdir}
 echo "=========================================="
 echo "Package: $package"
 echo "  Version: $version"
-echo "  Depends: $depends"
+if [ -n "$depends" ]; then
+	echo "  Depends: $depends"
+fi
 echo "  Arch: $arch"
 echo "<$ipk_name>"
 echo "==============================="
