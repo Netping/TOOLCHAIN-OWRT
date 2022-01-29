@@ -103,7 +103,7 @@ tar -czf ${tmpdir}/control.tar.gz -C ${tmpdir}/control/ .
 rm -fr ${tmpdir}/control
 
 ipk_name="${package}_${version}_${arch}.ipk"
-tar -czf $ipk_name -C ${tmpdir}/ .
+tar -czf $directory/$ipk_name -C ${tmpdir}/ .
 
 rm -fr ${tmpdir}
 
