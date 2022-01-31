@@ -1,15 +1,18 @@
 #!/usr/bin/python3
 import sys
-import re
 
 
 
 
-def getValue(line, value):
+def getValue(line, value):  
     if line.upper().startswith(value):
         line = line[len(value):]
         #return with cut character '=' and '"''
         line = line[1:]
+
+        if not line:
+            return ''
+
         #if exists '"' or "'" at the beginning and at the end of line then cut them too
         if (line[0] == '"' and line[len(line) - 1] == '"') or (line[0] == "'" and line[len(line) - 1] == "'"):
             line = line[1:]
@@ -105,13 +108,7 @@ if __name__ == "__main__":
 
                 value = getValue(line, 'PKG_VERSION')
                 if value:
-                    result = None
-                    try:
-                        result = re.findall(r'\S*\.V(\d+)\.S(\d+)', value)[0]
-                    except:
-                        result=re.findall(r'(\d+)\.(\d+)', value)[0]
-                        
-                    control['Version'] = result[0] + '.' + result[1] + control['Version']
+                    control['Version'] = value + control['Version']
                     continue
 
                 value = getValue(line, 'PKG_RELEASE')
