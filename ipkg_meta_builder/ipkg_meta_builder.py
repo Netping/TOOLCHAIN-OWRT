@@ -54,14 +54,14 @@ def writeConffiles(workdir, confdir, conffiles_list):
 def printHelp(program):
     print('Usage: python3 ' + program + ' <arch> <path_to_dir> [output_path]')
     print('       Avail archs:')
-    print('           x86-64')
+    print('           x86_64')
     print('           arm_cortex-a7_neon-vfpv4')
     print('')
     print('       Documantation: https://netping.atlassian.net/wiki/spaces/NW/pages/3605266478/DOC2.TOOLCHAIN-OWRT.pkg+meta+builder')
 
 if __name__ == "__main__":
     output_path = ''
-    avail_archs = [ 'x86-64', 'arm_cortex-a7_neon-vfpv4' ]
+    avail_archs = [ 'x86_64', 'arm_cortex-a7_neon-vfpv4' ]
 
     if len(sys.argv) < 3 or len(sys.argv) > 4:
         print('Error: wrong arguments!')
