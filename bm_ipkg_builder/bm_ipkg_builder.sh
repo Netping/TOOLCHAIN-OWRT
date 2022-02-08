@@ -65,7 +65,7 @@ echo "2.0" > ${tmpdir}/debian-binary
 
 install -d ${tmpdir}/control
 
-cat >${tmpdir}/control/postinst <<\EOL
+read -r -d '' postinst <<\EOL
 #!/bin/sh
 [ "${IPKG_NO_SCRIPT}" = "1" ] && exit 0
 [ -x ${IPKG_INSTROOT}/lib/functions.sh ] || exit 0
@@ -79,6 +79,14 @@ cat >${tmpdir}/control/prerm <<\EOL
 . ${IPKG_INSTROOT}/lib/functions.sh
 default_prerm $0 $@
 EOL
+
+postinstfile="$directory/postinst"
+
+if [ -f "$postinstfile" ]; then
+    postinst=$(cat $postinstfile)
+fi
+
+echo "$postinst" >${tmpdir}/control/postinst
 
 chmod +x ${tmpdir}/control/postinst
 chmod +x ${tmpdir}/control/prerm
