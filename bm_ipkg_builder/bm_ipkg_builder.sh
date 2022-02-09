@@ -79,17 +79,21 @@ cat >${tmpdir}/control/prerm <<\EOL
 . ${IPKG_INSTROOT}/lib/functions.sh
 default_prerm $0 $@
 EOL
+chmod +x ${tmpdir}/control/prerm
+
+preinstfile="$directory/preinst"
+if [ -f "$preinstfile" ]; then
+	cat $preinstfile >${tmpdir}/control/preinst
+	chmod +x ${tmpdir}/control/preinst
+fi
 
 postinstfile="$directory/postinst"
-
 if [ -f "$postinstfile" ]; then
-    postinst=$(cat $postinstfile)
+	postinst=$(cat $postinstfile)
 fi
 
 echo "$postinst" >${tmpdir}/control/postinst
-
 chmod +x ${tmpdir}/control/postinst
-chmod +x ${tmpdir}/control/prerm
 
 tar -czf ${tmpdir}/data.tar.gz -C $directory/data/ .
 
