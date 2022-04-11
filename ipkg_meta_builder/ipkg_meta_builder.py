@@ -24,13 +24,16 @@ def getValue(line, value):
 
 def writeControl(workdir, control_dict):
     try:
-        if not control_dict['Depends']:
-            control_dict['Depends'] = ' '
+#        if not control_dict['Depends']:
+#            control_dict['Depends'] = ' '
 
         with open(workdir + '/control', 'w') as f:
             f.write('Package: ' + control_dict['Package'] + '\n')
             f.write('Version: ' + control_dict['Version'] + '\n')
-            f.write('Depends: ' + control_dict['Depends'] + '\n')
+
+            if control_dict['Depends']:
+                f.write('Depends: ' + control_dict['Depends'] + '\n')
+
             f.write('License: ' + control_dict['License'] + '\n')
             f.write('Section: ' + control_dict['Section'] + '\n')
             f.write('Architecture: ' + control_dict['Architecture'] + '\n')
