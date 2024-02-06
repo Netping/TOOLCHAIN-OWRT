@@ -65,7 +65,7 @@ echo "2.0" > ${tmpdir}/debian-binary
 
 install -d ${tmpdir}/control
 
-read -r -d '' postinst <<\EOL
+cat >${tmpdir}/control/postinst <<\EOL
 #!/bin/sh
 [ "${IPKG_NO_SCRIPT}" = "1" ] && exit 0
 [ -x ${IPKG_INSTROOT}/lib/functions.sh ] || exit 0
@@ -79,31 +79,19 @@ cat >${tmpdir}/control/prerm <<\EOL
 . ${IPKG_INSTROOT}/lib/functions.sh
 default_prerm $0 $@
 EOL
-chmod +x ${tmpdir}/control/prerm
 
-preinstfile="$directory/preinst"
-if [ -f "$preinstfile" ]; then
-	cat $preinstfile >${tmpdir}/control/preinst
-	chmod +x ${tmpdir}/control/preinst
-fi
-
-postinstfile="$directory/postinst"
-if [ -f "$postinstfile" ]; then
-	postinst=$(cat $postinstfile)
-fi
-
-echo "$postinst" >${tmpdir}/control/postinst
 chmod +x ${tmpdir}/control/postinst
+chmod +x ${tmpdir}/control/prerm
 
 tar -czf ${tmpdir}/data.tar.gz -C $directory/data/ .
 
 data_size=$(stat --printf="%s" ${tmpdir}/data.tar.gz)
 
-is_field==$(grep Installed-Size $controlfile)
+is_field=$(grep Installed-Size $controlfile)
 if [ -n "$is_field" ]; then
     sed -re "s/^(Installed-Size:)\s+\w+/\1 $data_size/g" $controlfile > ${tmpdir}/control/control
 else
-    echo "Installed-Size: $data_size" >> ${tmpdir}/control/control
+    cp $controlfile ${tmpdir}/control/control
 fi
 
 if [ -f "$directory/conffiles" ]; then

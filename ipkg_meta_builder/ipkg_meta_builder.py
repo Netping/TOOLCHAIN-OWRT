@@ -24,20 +24,19 @@ def getValue(line, value):
 
 def writeControl(workdir, control_dict):
     try:
-#        if not control_dict['Depends']:
-#            control_dict['Depends'] = ' '
+        if not control_dict['Installed-Size']:
+            control_dict['Installed-Size'] = 0
 
         with open(workdir + '/control', 'w') as f:
             f.write('Package: ' + control_dict['Package'] + '\n')
             f.write('Version: ' + control_dict['Version'] + '\n')
-
-            if control_dict['Depends']:
+            if 'Depends' in control_dict:
                 f.write('Depends: ' + control_dict['Depends'] + '\n')
-
             f.write('License: ' + control_dict['License'] + '\n')
             f.write('Section: ' + control_dict['Section'] + '\n')
             f.write('Architecture: ' + control_dict['Architecture'] + '\n')
             f.write('Description: ' + control_dict['Description'] + '\n')
+            f.write('Installed-Size: ' + control_dict['Installed-Size'] + '\n')
 
         print('File control created successfully!')
     except Exception as ex:
@@ -88,12 +87,12 @@ if __name__ == "__main__":
         control = {
                     'Package' : '',
                     'Version' : '',
-                    'Depends' : '',
                     'License' : 'MIT',
                     'Section' : '',
                     'Category' : '',
                     'Architecture' : sys.argv[1],
-                    'Description' : ''
+                    'Description' : '',
+                    'Installed-Size' : 0
                 }
         with open(sys.argv[2] + '/Makefile.inf', 'r') as f:
             lines = f.readlines()
